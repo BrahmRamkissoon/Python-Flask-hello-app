@@ -1,22 +1,16 @@
 import os
 
 
-from flask import Flask, url_for
+from flask import Flask, request
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return url_for('show_user_profile', username='david')
-    
-@app.route('/username/<username>')
-def show_user_profile(username):
-    # show the user profile for that user
-    return "User %s" % username
-    
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    # show the post with the given id, the ide must be an integer
-    return "Post %d" % post_id
+# view a login page using GET, pass the username using POST
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return 'username is ' + request.values["username"]
+    else:
+        return '<form method="post" action="/login"><input type="text" name="username" /><p><button type="submit">Submit</button></p></form>'
 
 if __name__ == '__main__':
     host = os.getenv('IP', '0.0.0.0')
