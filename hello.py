@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
 app = Flask(__name__)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -9,6 +9,7 @@ def login():
     # user has pressed submit button
     if request.method == 'POST': 
         if valid_login(request.form['username'], request.form['password']):
+            flash("Successfully logged in")
             # redirecting to url for function welcome
             return redirect(url_for('welcome', username=request.form.get('username')))
         else:
@@ -30,4 +31,5 @@ if __name__ == '__main__':
     host = os.getenv('IP', '0.0.0.0')
     port = int(os.getenv('PORT', 5000))
     app.debug = True
+    app.secret_key = 'SuperSecretKey'
     app.run(host=host, port=port)
